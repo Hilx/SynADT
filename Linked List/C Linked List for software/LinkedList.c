@@ -1,11 +1,6 @@
-/*	Created by Hilda Xue on 16 Sept 2015 */
-/*										 */
-/*	This program 1. creates a list       */
-/*				 2. reverses the list    */
-/*				 3. deletes the list     */
-/*										 */
-
-
+//	Created by Hilda Xue on 16 Sept 2015 									 
+//	This program 1. creates a list 2. reverses the list 3. deletes the list        
+									 
 #include <stdio.h>
 #include <stdlib.h>
 
