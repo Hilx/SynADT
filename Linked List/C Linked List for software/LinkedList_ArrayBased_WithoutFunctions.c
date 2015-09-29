@@ -110,7 +110,7 @@ void PrintList(int *hdPtr){
 
 	nowPtr = hdPtr;
 	Flag_Stop = 0;
-	if (hdPtr != NULL){ //nowPtr !=0
+	if (nowPtr != NULL){ //nowPtr !=0
 		printf("Printing List [");
 		while(Flag_Stop == 0){ //nowPtr != 0
 			printf(" %d",nowPtr[0]);	
