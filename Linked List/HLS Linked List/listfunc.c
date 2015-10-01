@@ -31,7 +31,7 @@ struct node_t node_read(data_t *Master2Mem, ptr_t nodePtr){
 void node_set_next(data_t *Master2Mem, ptr_t currentNodePtr, ptr_t nextNodePtr){
 	next_t offset;
 	offset = nextNodePtr - currentNodePtr;
-	write_node_next(Master2Mem, currentNodePtr);	
+	node_write_next(Master2Mem, currentNodePtr, offset);
 }
 
 ptr_t node_alloc_new(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, ptr_t nextNodePtr){
@@ -78,8 +78,9 @@ ptr_t ReverseList(data_t *Master2Mem,ptr_t hdPtr){
 		offset = node_read_next(Master2Mem, currentPtr);
 		hdOldListPtr = currentPtr + offset;
 		
-		offset = hdNewListPtr - currentPtr;
-		node_write_next(Master2Mem, currentPtr, offset);
+		//offset = hdNewListPtr - currentPtr;
+		//node_write_next(Master2Mem, currentPtr, offset);
+		node_set_next(Master2Mem, currentPtr, hdNewListPtr);
 		
 		hdNewListPtr = currentPtr;
 		

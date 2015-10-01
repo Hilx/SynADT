@@ -13,9 +13,9 @@ int ListIP(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc){
 	/* Creating a list */
 	hdPtr = ListGen(Master2Mem, Master2SysAlloc, SizeOfList, hdPtr);
 	/* Reverse the list */
-	//hdPtr = ReverseList(Master2Mem, hdPtr);
+	hdPtr = ReverseList(Master2Mem, hdPtr);
 	/* Delete the list */
-	//hdPtr = DeleteList(Master2Mem, Master2SysAlloc, hdPtr);
+	hdPtr = DeleteList(Master2Mem, Master2SysAlloc, hdPtr);
 
 	return hdPtr;
 }
