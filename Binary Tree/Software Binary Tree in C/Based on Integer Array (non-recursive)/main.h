@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 struct node_t{
-	unsigned left; //0
-	unsigned right;	//1
+	signed left; //0
+	signed right;	//1
 	int data; //2
 };
 #define NODE_SIZE 3 // each node has 3 integers
@@ -39,6 +39,10 @@ struct stack_t{
 	ptr_t pointer;
 	int operation;
 };
+
+/* Software Only */
+void printTree(int *myHeap, ptr_t nowPtr);
+void printValue(int *myHeap, ptr_t nowPtr);
 
 /* Application Level */
 #define FB_DONE 1

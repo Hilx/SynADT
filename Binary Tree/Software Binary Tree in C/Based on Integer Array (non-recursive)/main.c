@@ -14,6 +14,13 @@ int main(void){
 	root = TreeGen(myHeap, stackPtr, 5);
 	printf("root = %d\n",root);
 	
+	//printTree(myHeap, root);
+	int i;
+	for(i = 0; i<5; i++){
+		printf("%d,%d,%d\n",myHeap[i*3+2],myHeap[i*3+0], myHeap[i*3+1]);
+	}
+	
+	printTree(myHeap, root);	
 	return 0;	
 }
 

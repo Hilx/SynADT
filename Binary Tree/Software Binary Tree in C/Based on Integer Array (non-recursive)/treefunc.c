@@ -1,25 +1,19 @@
 #include "main.h"
 
-
-
 /* software only */
-/*
-void printTree(int *tree){
+void printTree(int *myHeap, ptr_t nowPtr){
 	printf("Printing the tree now [ ");
-	printValue(tree);
+	printValue(myHeap, nowPtr);
 	printf(" ] Done printing.\n");
 }
-void printValue(int *tree){
-	//printf("nowNode %d\n",tree);
-	if(tree != NULL){
-		printf("go left\n");
-		printValue(get_left_pointer(tree));
-		printf(" %d ",get_node_data(tree));
-		printf("go right\n");
-		printValue(get_right_pointer(tree));
+void printValue(int *myHeap, ptr_t nowPtr){
+	if(nowPtr != NULL_PTR){
+		printValue(myHeap, node_get_leftNodePtr(myHeap, nowPtr));
+		printf("%d ", node_read_data(myHeap, nowPtr));
+		printValue(myHeap, node_get_rightNodePtr(myHeap, nowPtr));
 	}
 }
-*/
+
 /* Application Level */
 ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 	int i;
@@ -31,6 +25,7 @@ ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 		}else{
 			insertResult = Insert(myHeap, stackPtr, root2return,i);
 		}
+		//printTree(myHeap, root2return);
 	}
 	return root2return;
 }
@@ -42,7 +37,6 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	struct stack_t stackOutput;
 	ptr_t currentPtr = treePtr;
 	ptr_t returnPtr;
-
 	
 	while(flag_stop == 0){
 		
@@ -65,11 +59,9 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 				if(stackOutput.operation == GOING_LEFT){
 					node_set_left(myHeap, stackOutput.pointer, subResult.pointer);
 				}else{
-
 					node_set_right(myHeap, stackOutput.pointer, subResult.pointer);
 				}
 				// read stack to clear stack
-
 				while(stackPtr != NULL){
 					stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
 					stackPtr = stackOutput.hdPtr;
