@@ -1,0 +1,183 @@
+#include "main.h"
+
+
+
+/* software only */
+/*
+void printTree(int *tree){
+	printf("Printing the tree now [ ");
+	printValue(tree);
+	printf(" ] Done printing.\n");
+}
+void printValue(int *tree){
+	//printf("nowNode %d\n",tree);
+	if(tree != NULL){
+		printf("go left\n");
+		printValue(get_left_pointer(tree));
+		printf(" %d ",get_node_data(tree));
+		printf("go right\n");
+		printValue(get_right_pointer(tree));
+	}
+}
+*/
+/* Application Level */
+ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
+	int i;
+	ptr_t root2return = NULL_PTR;
+	ptr_t insertResult;
+	for(i = 0; i < NumberOfNodes; i++){		
+		if(i == 0){
+			root2return = Insert(myHeap, stackPtr, root2return,i);
+		}else{
+			insertResult = Insert(myHeap, stackPtr, root2return,i);
+		}
+	}
+	return root2return;
+}
+
+ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
+	int flag_stack_usage = 0;
+	int flag_stop = 0;
+	struct insert_t subResult;
+	struct stack_t stackOutput;
+	ptr_t currentPtr = treePtr;
+	ptr_t returnPtr;
+
+	
+	while(flag_stop == 0){
+		
+		subResult = InsertSub(myHeap, currentPtr, data);
+		if(subResult.feedback == FB_DONE){
+
+			flag_stop = 1;	
+			//printf("flag_stop = %d", flag_stop);
+			if(flag_stack_usage == 0){ 
+				/* 	if the node is inserted before the stack is used,
+				return the pointer address back. 
+				no rectursion has happened, so no need to update 
+				left or right pointers. */				
+				returnPtr = subResult.pointer;
+			}else{
+
+				stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
+				stackPtr = stackOutput.hdPtr;
+
+				if(stackOutput.operation == GOING_LEFT){
+					node_set_left(myHeap, stackOutput.pointer, subResult.pointer);
+				}else{
+
+					node_set_right(myHeap, stackOutput.pointer, subResult.pointer);
+				}
+				// read stack to clear stack
+
+				while(stackPtr != NULL){
+					stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
+					stackPtr = stackOutput.hdPtr;
+				}
+			}
+		}else{
+			flag_stack_usage = 1;
+			
+			if(subResult.feedback == FB_LEFT){				
+				stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_LEFT);	
+				stackPtr = stackOutput.hdPtr;
+				currentPtr = node_get_leftNodePtr(myHeap, currentPtr);
+
+			}else{				
+				stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_RIGHT);	
+				stackPtr = stackOutput.hdPtr;
+				currentPtr = node_get_rightNodePtr(myHeap, currentPtr);
+			}	
+			
+		}
+	}
+	return returnPtr;
+}
+
+struct insert_t InsertSub(int *myHeap, ptr_t treePtr, int data){
+	data_t nodeData = node_read_data(myHeap, treePtr);
+	struct insert_t output;
+	if(treePtr == NULL_PTR){
+		output.pointer = node_alloc_new(myHeap, data, NULL_PTR, NULL_PTR);
+		output.feedback = FB_DONE;
+		//return:data_inserted & pointer of new node created
+	}else if(data < nodeData){
+		output.feedback = FB_LEFT;
+		// return:go to the left node
+	}else{
+		output.feedback = FB_RIGHT;
+		// return:go to the right node
+	}
+	return output;
+}
+
+
+/* Node Operations */
+void node_set_left(int *myHeap, ptr_t currentPtr, ptr_t nextPtr){
+	next_t offset =  nextPtr - currentPtr;
+	node_write_left(myHeap, currentPtr, offset);
+}
+void node_set_right(int *myHeap, ptr_t currentPtr, ptr_t nextPtr){
+	next_t offset =  nextPtr - currentPtr;
+	node_write_right(myHeap, currentPtr, offset);
+}
+
+ptr_t node_alloc_new(int *myHeap, data_t data, ptr_t leftNodePtr, ptr_t rightNodePtr){
+	ptr_t newNodePtr;
+	struct node_t newNode;
+	newNodePtr = SysMalloc(sizeof(struct node_t));
+	newNode.data = data;
+	newNode.left = leftNodePtr - newNodePtr;
+	newNode.right = rightNodePtr - newNodePtr;
+	node_write(myHeap, newNodePtr, newNode);
+	return newNodePtr;
+}
+ptr_t node_get_leftNodePtr(int *myHeap, ptr_t currentNodePtr){
+	next_t offset = node_read_left(myHeap, currentNodePtr);
+	return currentNodePtr + offset;
+}
+ptr_t node_get_rightNodePtr(int *myHeap, ptr_t currentNodePtr){
+	next_t offset = node_read_right(myHeap, currentNodePtr);
+	return currentNodePtr + offset;
+}
+void node_delete(ptr_t nodePtr){
+	SysFree(nodePtr);
+}
+
+/* Whole Node Access in Memory */
+void node_write(int *myHeap, ptr_t nodePtr, struct node_t nodeIn){
+	node_write_data(myHeap, nodePtr, nodeIn.data);
+	node_write_left(myHeap, nodePtr, nodeIn.left);
+	node_write_right(myHeap, nodePtr, nodeIn.right);	
+}
+struct node_t node_read(int *myHeap, ptr_t nodePtr){
+	struct node_t NodeOut;
+	NodeOut.data = node_read_data(myHeap, nodePtr);
+	NodeOut.left = node_read_left(myHeap, nodePtr);
+	NodeOut.right= node_read_right(myHeap, nodePtr);
+	return NodeOut;
+}
+
+/* Access Node in Memory (SINGLE ELEMENT) - Write Node */
+void node_write_left(int *myHeap, ptr_t nodePtr, next_t offset){
+	myHeap[nodePtr+LEFT_OFFSET] = offset;
+	
+}
+void node_write_right(int *myHeap, ptr_t nodePtr, next_t offset){
+	myHeap[nodePtr+RIGHT_OFFSET] = offset;
+}
+void node_write_data(int *myHeap, ptr_t nodePtr, data_t data){
+	myHeap[nodePtr+DATA_OFFSET] = data;
+}
+
+/* Access Node in Memory (SINGLE ELEMENT) - Read Node */
+next_t node_read_left(int *myHeap, ptr_t nodePtr){
+	return myHeap[nodePtr + LEFT_OFFSET];
+}
+next_t node_read_right(int *myHeap, ptr_t nodePtr){
+	return myHeap[nodePtr + RIGHT_OFFSET];
+}
+data_t node_read_data(int *myHeap, ptr_t nodePtr){
+	return myHeap[nodePtr + DATA_OFFSET];
+}
+
