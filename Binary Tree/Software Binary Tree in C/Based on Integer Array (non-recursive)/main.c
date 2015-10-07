@@ -12,12 +12,15 @@ int main(void){
 	
 	/* Application Code */
 	/* Create Tree */
-	root = TreeGen(myHeap, stackPtr, 5);
+	root = TreeGen(myHeap, stackPtr, 7);
 	printTree(myHeap, root);	
 	/*Search */
 	returnedPtr = Search(myHeap, stackPtr, root, searchKey);
 	printf("searchKey %d found at %d, myHeap[%d] has data %d\n", searchKey, returnedPtr,returnedPtr, myHeap[returnedPtr+DATA_OFFSET]);
-
+	/* Delete Tree*/
+	root = DeleteTree(myHeap, stackPtr, root);
+	printTree(myHeap, root);
+	
 	return 0;	
 }
 

@@ -40,13 +40,15 @@ struct stack_t{
 	int operation;
 };
 
-
-
 /* Application Level */
 /* sub() stuff */
 #define FB_DONE 1
 #define FB_LEFT 2
 #define FB_RIGHT 3
+
+/* Delete */
+ptr_t Deletetree(int *myHeap, int *stackPtr, ptr_t treePtr);
+struct sub_t DeleteTreeSub(int *myHeap, ptr_t treePtr);
 
 /* Search */
 ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data);

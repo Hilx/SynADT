@@ -1,10 +1,79 @@
 #include "main.h"
 
-
 /* Application Level */
+/* Delete Tree */
+ptr_t DeleteTree(int *myHeap, int *stackPtr, ptr_t treePtr){
+	int flag_stackIsUsed = 0;
+	int flag_stop = 0;
+	struct sub_t subResult;
+	struct stack_t stackOutput;
+	ptr_t currentPtr = treePtr;
+	ptr_t returnPtr;
+	
+	while(flag_stop == 0){
+		
+		subResult = DeleteTreeSub(myHeap, currentPtr);
+		if(subResult.feedback == FB_DONE){
+			if(flag_stackIsUsed == 0){ 
+				flag_stop = 1;				
+				returnPtr = subResult.pointer;
+			}else{
+				if(stackPtr == NULL){
+					flag_stop = 1;
+					returnPtr = subResult.pointer;
+				}else{
+				
+					stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
+					stackPtr = stackOutput.hdPtr;
+					currentPtr = stackOutput.pointer;
+
+					if(stackOutput.operation == GOING_LEFT){
+						node_set_left(myHeap, stackOutput.pointer, subResult.pointer);
+					}else{
+						node_set_right(myHeap, stackOutput.pointer, subResult.pointer);
+					}
+				}
+
+			}
+		}else{
+			flag_stackIsUsed = 1;			
+			if(subResult.feedback == FB_LEFT){				
+				stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_LEFT);	
+				stackPtr = stackOutput.hdPtr;
+				currentPtr = subResult.pointer;
+
+			}else{				
+				stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_RIGHT);	
+				stackPtr = stackOutput.hdPtr;
+				currentPtr = subResult.pointer;
+			}	
+			
+		}
+	}
+	return returnPtr;
+}
+struct sub_t DeleteTreeSub(int *myHeap, ptr_t treePtr){
+	struct sub_t output;
+	ptr_t leftPtr = node_get_leftNodePtr(myHeap, treePtr);
+	ptr_t rightPtr = node_get_rightNodePtr(myHeap, treePtr);
+		if(treePtr == NULL_PTR){
+			output.pointer = NULL_PTR;
+			output.feedback = FB_DONE;
+		}else if(leftPtr == NULL_PTR && rightPtr == NULL_PTR){
+			node_delete(treePtr);
+			output.pointer = NULL_PTR;
+			output.feedback = FB_DONE;
+		}else if(leftPtr != NULL_PTR){
+			output.pointer = leftPtr;
+			output.feedback = FB_LEFT;
+		}else if(rightPtr != NULL_PTR){
+			output.pointer = rightPtr;
+			output.feedback = FB_RIGHT;			
+		}	
+	return output;
+}
 
 /* Search */
-
 ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	ptr_t localPtr = treePtr;
 	struct sub_t subResult;
@@ -50,11 +119,12 @@ ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 	int i;
 	ptr_t root2return = NULL_PTR;
 	ptr_t insertResult;
+	int inputArray[7] = {5,3,7,2,4,6,8};
 	for(i = 0; i < NumberOfNodes; i++){		
 		if(i == 0){
-			root2return = Insert(myHeap, stackPtr, root2return,i);
+			root2return = Insert(myHeap, stackPtr, root2return,inputArray[i]);
 		}else{
-			insertResult = Insert(myHeap, stackPtr, root2return,i);
+			insertResult = Insert(myHeap, stackPtr, root2return,inputArray[i]);
 		}
 		//printTree(myHeap, root2return);
 	}
@@ -62,7 +132,7 @@ ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 }
 
 ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
-	int flag_stack_usage = 0;
+	int flag_stackIsUsed = 0;
 	int flag_stop = 0;
 	struct sub_t subResult;
 	struct stack_t stackOutput;
@@ -76,7 +146,7 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 
 			flag_stop = 1;	
 			//printf("flag_stop = %d", flag_stop);
-			if(flag_stack_usage == 0){ 
+			if(flag_stackIsUsed == 0){ 
 				/* 	if the node is inserted before the stack is used,
 				return the pointer address back. 
 				no rectursion has happened, so no need to update 
@@ -99,7 +169,7 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 				}
 			}
 		}else{
-			flag_stack_usage = 1;
+			flag_stackIsUsed = 1;
 			
 			if(subResult.feedback == FB_LEFT){				
 				stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_LEFT);	
