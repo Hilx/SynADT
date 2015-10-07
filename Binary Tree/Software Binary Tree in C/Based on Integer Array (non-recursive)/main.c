@@ -7,20 +7,17 @@ int main(void){
 	int *stackPtr = NULL;
 	ptr_t root;
 	ptr_t returnedPtr;
-	struct insert_t subResult;
+	struct sub_t subResult;
+	int searchKey = 3;
 	
 	/* Application Code */
-	printf("myHeap = %d\n",myHeap);
+	/* Create Tree */
 	root = TreeGen(myHeap, stackPtr, 5);
-	printf("root = %d\n",root);
-	
-	//printTree(myHeap, root);
-	int i;
-	for(i = 0; i<5; i++){
-		printf("%d,%d,%d\n",myHeap[i*3+2],myHeap[i*3+0], myHeap[i*3+1]);
-	}
-	
 	printTree(myHeap, root);	
+	/*Search */
+	returnedPtr = Search(myHeap, stackPtr, root, searchKey);
+	printf("searchKey %d found at %d, myHeap[%d] has data %d\n", searchKey, returnedPtr,returnedPtr, myHeap[returnedPtr+DATA_OFFSET]);
+
 	return 0;	
 }
 

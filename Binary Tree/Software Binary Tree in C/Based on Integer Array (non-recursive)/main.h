@@ -18,7 +18,7 @@ typedef signed next_t;
 typedef int data_t;
 
 /* INSERT HELPER STRUCT */
-struct insert_t{
+struct sub_t{
 	int feedback;
 	ptr_t pointer;
 };
@@ -40,18 +40,22 @@ struct stack_t{
 	int operation;
 };
 
-/* Software Only */
-void printTree(int *myHeap, ptr_t nowPtr);
-void printValue(int *myHeap, ptr_t nowPtr);
+
 
 /* Application Level */
+/* sub() stuff */
 #define FB_DONE 1
 #define FB_LEFT 2
 #define FB_RIGHT 3
 
+/* Search */
+ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
+struct sub_t SearchSub(int *myHeap, ptr_t treePtr, int data);
+
+/* Create */
 ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes);
 ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
-struct insert_t InsertSub(int *myHeap, ptr_t treePtr, int data);
+struct sub_t InsertSub(int *myHeap, ptr_t treePtr, int data);
 
 /* Node Operations */
 void node_set_left(int *myHeap, ptr_t currentPtr, ptr_t nextPtr);
@@ -76,7 +80,7 @@ data_t node_read_data(int *myHeap, ptr_t nodePtr);
 int SysMalloc(int size);
 void SysFree(int addr);
 
-
+/* Stack */
 int *ListGen(int SizeOfList, int *hdPtr); 
 int *Add2List(int data, int *hdPtr);
 int *ReverseList(int *hdPtr);
@@ -84,3 +88,7 @@ int *DeleteList(int *hdPtr);
 int *DeleteNode(int *hdPtr);
 void PrintList(int *hdPtr);
 struct stack_t myStack(int *hdPtr, int command, ptr_t pointer, int operation);
+
+/* Software Only */
+void printTree(int *myHeap, ptr_t nowPtr);
+void printValue(int *myHeap, ptr_t nowPtr);

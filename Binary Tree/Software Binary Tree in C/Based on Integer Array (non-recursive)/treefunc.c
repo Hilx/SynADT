@@ -1,20 +1,51 @@
 #include "main.h"
 
-/* software only */
-void printTree(int *myHeap, ptr_t nowPtr){
-	printf("Printing the tree now [ ");
-	printValue(myHeap, nowPtr);
-	printf(" ] Done printing.\n");
-}
-void printValue(int *myHeap, ptr_t nowPtr){
-	if(nowPtr != NULL_PTR){
-		printValue(myHeap, node_get_leftNodePtr(myHeap, nowPtr));
-		printf("%d ", node_read_data(myHeap, nowPtr));
-		printValue(myHeap, node_get_rightNodePtr(myHeap, nowPtr));
-	}
-}
 
 /* Application Level */
+
+/* Search */
+
+ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
+	ptr_t localPtr = treePtr;
+	struct sub_t subResult;
+	ptr_t outputPtr;
+	int flag_found = 0;
+	
+	subResult = SearchSub(myHeap, localPtr, data);
+	while(subResult.pointer != NULL_PTR && flag_found == 0){
+		
+		
+		if(subResult.feedback == FB_DONE){
+			outputPtr = subResult.pointer;
+			flag_found = 1;
+		}else{ 
+			if(subResult.feedback == FB_LEFT){
+				localPtr = node_get_leftNodePtr(myHeap, localPtr);
+			}else{
+				localPtr = node_get_rightNodePtr(myHeap, localPtr);
+			}		
+			subResult = SearchSub(myHeap, localPtr, data);
+		}
+	}
+	return outputPtr;	
+}
+
+struct sub_t SearchSub(int *myHeap, ptr_t treePtr, int data){
+	struct sub_t output;
+	int readData = node_read_data(myHeap, treePtr);
+	
+	if(data == readData){
+		output.pointer = treePtr;
+		output.feedback = FB_DONE;
+	}else if(data < readData){
+		output.feedback = FB_LEFT;	
+	}else{
+		output.feedback = FB_RIGHT;
+	}
+	
+	return output;
+}
+/* Create Tree */
 ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 	int i;
 	ptr_t root2return = NULL_PTR;
@@ -33,7 +64,7 @@ ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes){
 ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	int flag_stack_usage = 0;
 	int flag_stop = 0;
-	struct insert_t subResult;
+	struct sub_t subResult;
 	struct stack_t stackOutput;
 	ptr_t currentPtr = treePtr;
 	ptr_t returnPtr;
@@ -86,9 +117,9 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	return returnPtr;
 }
 
-struct insert_t InsertSub(int *myHeap, ptr_t treePtr, int data){
+struct sub_t InsertSub(int *myHeap, ptr_t treePtr, int data){
 	data_t nodeData = node_read_data(myHeap, treePtr);
-	struct insert_t output;
+	struct sub_t output;
 	if(treePtr == NULL_PTR){
 		output.pointer = node_alloc_new(myHeap, data, NULL_PTR, NULL_PTR);
 		output.feedback = FB_DONE;
@@ -172,4 +203,16 @@ next_t node_read_right(int *myHeap, ptr_t nodePtr){
 data_t node_read_data(int *myHeap, ptr_t nodePtr){
 	return myHeap[nodePtr + DATA_OFFSET];
 }
-
+/* software only */
+void printTree(int *myHeap, ptr_t nowPtr){
+	printf("Printing the tree now [ ");
+	printValue(myHeap, nowPtr);
+	printf(" ] Done printing.\n");
+}
+void printValue(int *myHeap, ptr_t nowPtr){
+	if(nowPtr != NULL_PTR){
+		printValue(myHeap, node_get_leftNodePtr(myHeap, nowPtr));
+		printf("%d ", node_read_data(myHeap, nowPtr));
+		printValue(myHeap, node_get_rightNodePtr(myHeap, nowPtr));
+	}
+}
