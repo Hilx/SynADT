@@ -1,6 +1,68 @@
 #include "main.h"
 
 /* Application Level */
+/* update */
+ptr_t UpdateNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int oldKey, int newKey){
+	rootPtr = DeleteTreeNode(myHeap, stackPtr, rootPtr, oldKey);
+	ptr_t newPtr = Insert(myHeap, stackPtr, rootPtr, newKey);	
+	return rootPtr;
+}
+
+/* Delete Node */
+ptr_t DeleteTreeNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int key){
+	struct search_t node2delete = Search(myHeap, stackPtr, rootPtr, key);
+	ptr_t nodePtr = node2delete.nodePtr;
+	ptr_t leftPtr = node_get_leftNodePtr(myHeap, nodePtr);
+	ptr_t rightPtr = node_get_rightNodePtr(myHeap, nodePtr);
+	struct node_t node2move;
+	ptr_t tempPtr;
+	if(leftPtr != NULL_PTR){
+		// copy contents of leftPtr to nodePtr, then free nodePtr		
+		node_write_data(myHeap, nodePtr, node_read_data(myHeap, leftPtr));
+		ptr_t left_leftPtr = node_get_leftNodePtr(myHeap, leftPtr);
+		node_set_left(myHeap, nodePtr, left_leftPtr);
+		ptr_t left_rightPtr = node_get_rightNodePtr(myHeap, leftPtr);
+		node_set_right(myHeap, nodePtr, left_rightPtr);
+
+		node_delete(leftPtr);
+		if(rightPtr != NULL_PTR){
+			
+			if(left_rightPtr == NULL_PTR){
+				node_set_right(myHeap, nodePtr, rightPtr);				
+			}else{
+				//insert new node with rightPtr node key value
+				int rightNodeData = node_read_data(myHeap, rightPtr);				
+				tempPtr = Insert(myHeap, stackPtr, rootPtr,rightNodeData);				
+				node_write_data(myHeap, tempPtr, rightNodeData);
+				ptr_t right_leftPtr = node_get_leftNodePtr(myHeap, rightPtr);
+				node_set_left(myHeap, tempPtr, right_leftPtr);
+				ptr_t right_rightPtr = node_get_rightNodePtr(myHeap, rightPtr);
+				node_set_right(myHeap, tempPtr, right_rightPtr);
+			}
+		}
+	}else if(rightPtr != NULL_PTR){
+		node_write_data(myHeap, nodePtr, node_read_data(myHeap, rightPtr));
+		ptr_t right_leftPtr = node_get_leftNodePtr(myHeap, rightPtr);
+		node_set_left(myHeap, nodePtr, right_leftPtr);
+		ptr_t right_rightPtr = node_get_rightNodePtr(myHeap, rightPtr);
+		node_set_right(myHeap, nodePtr, right_rightPtr);			
+		node_delete(rightPtr);		
+	}else{ // no children nodes
+		// need to update the parent node's pointer
+
+		node_delete(nodePtr);		
+		if(node2delete.direction == GOING_LEFT){
+			node_set_left(myHeap, node2delete.parentPtr, NULL_PTR);	
+		}else if(node2delete.direction == GOING_RIGHT){// right pointer need to be updated
+			node_set_right(myHeap, node2delete.parentPtr, NULL_PTR);	
+		}else{
+			//update root;
+			rootPtr = NULL_PTR;
+		}
+	}
+	return rootPtr;
+}
+
 /* Delete Tree */
 ptr_t DeleteTree(int *myHeap, int *stackPtr, ptr_t treePtr){
 	int flag_stackIsUsed = 0;
@@ -74,29 +136,31 @@ struct sub_t DeleteTreeSub(int *myHeap, ptr_t treePtr){
 }
 
 /* Search */
-ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
+struct search_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	ptr_t localPtr = treePtr;
 	struct sub_t subResult;
-	ptr_t outputPtr;
-	int flag_found = 0;
+	struct search_t output;
+	int flag_found = 0;	
 	
+	output.direction = 7;
 	subResult = SearchSub(myHeap, localPtr, data);
-	while(subResult.pointer != NULL_PTR && flag_found == 0){
-		
-		
+	while(subResult.pointer != NULL_PTR && flag_found == 0){	
 		if(subResult.feedback == FB_DONE){
-			outputPtr = subResult.pointer;
+			output.nodePtr = subResult.pointer;
 			flag_found = 1;
-		}else{ 
-			if(subResult.feedback == FB_LEFT){
+		}else{
+			output.parentPtr = localPtr;
+			if(subResult.feedback == FB_LEFT){				
 				localPtr = node_get_leftNodePtr(myHeap, localPtr);
+				output.direction = GOING_LEFT;
 			}else{
 				localPtr = node_get_rightNodePtr(myHeap, localPtr);
+				output.direction = GOING_RIGHT;
 			}		
 			subResult = SearchSub(myHeap, localPtr, data);
 		}
 	}
-	return outputPtr;	
+	return output;	
 }
 
 struct sub_t SearchSub(int *myHeap, ptr_t treePtr, int data){
@@ -140,7 +204,6 @@ ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data){
 	ptr_t returnPtr;
 	
 	while(flag_stop == 0){
-		
 		subResult = InsertSub(myHeap, currentPtr, data);
 		if(subResult.feedback == FB_DONE){
 

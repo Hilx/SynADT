@@ -23,6 +23,12 @@ struct sub_t{
 	ptr_t pointer;
 };
 
+struct search_t{
+	ptr_t nodePtr;
+	ptr_t parentPtr;
+	int direction;
+};
+
 /* RAM */
 int myHeapIndex;
 
@@ -46,12 +52,17 @@ struct stack_t{
 #define FB_LEFT 2
 #define FB_RIGHT 3
 
+/* Update */
+ptr_t UpdateNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int oldKey, int newKey);
+/* Delete Node */
+ptr_t DeleteTreeNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int key);
+
 /* Delete */
 ptr_t Deletetree(int *myHeap, int *stackPtr, ptr_t treePtr);
 struct sub_t DeleteTreeSub(int *myHeap, ptr_t treePtr);
 
 /* Search */
-ptr_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
+struct search_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
 struct sub_t SearchSub(int *myHeap, ptr_t treePtr, int data);
 
 /* Create */
