@@ -1,4 +1,4 @@
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 /* Application Level */
 /* Create Tree */
@@ -30,12 +30,13 @@ ptr_t Insert(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t stackPtr, ptr_t 
 
 			flag_stop = 1;	
 			//printf("flag_stop = %d", flag_stop);
+			returnPtr = subResult.pointer;
 			if(flag_stackIsUsed == 0){ 
 				/* 	if the node is inserted before the stack is used,
 				return the pointer address back. 
 				no rectursion has happened, so no need to update 
 				left or right pointers. */				
-				returnPtr = subResult.pointer;
+
 			}else{
 
 				stackOutput = dynamicStack(Master2Mem, Master2SysAlloc, stackPtr, READ_STACK, 0, 0);

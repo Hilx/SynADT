@@ -1,4 +1,4 @@
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 volatile int SysMalloc(int size, data_t *Master2SysAlloc){
 

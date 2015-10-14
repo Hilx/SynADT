@@ -1,4 +1,4 @@
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 struct stack_t dynamicStack(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdPtr, int command, ptr_t pointer, int operation){
 	struct stack_t output;

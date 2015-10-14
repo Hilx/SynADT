@@ -1,4 +1,4 @@
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 /* Memory Node Access - Write Node */
 void list_node_write_next(data_t *Master2Mem, ptr_t nodePtr, next_t offset){

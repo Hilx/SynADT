@@ -1,4 +1,4 @@
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 /* Low-level list manipulation functions */
 void tree_node_set_left(data_t *Master2Mem, ptr_t currentNodePtr, ptr_t nextNodePtr){

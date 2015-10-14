@@ -6,6 +6,6 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "projectname_header.h"
+#include "SynADT_header.h"
 
 #endif
