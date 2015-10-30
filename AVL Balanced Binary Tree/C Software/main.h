@@ -30,6 +30,13 @@ struct search_t{
 	ptr_t nodePtr;
 	ptr_t parentPtr;
 	int direction;
+	int *stackPtr; // for balancing tree
+	int stackPtr_avl;
+};
+
+struct ptrBundle_t{
+	ptr_t root;
+	ptr_t nodePtr;
 };
 
 /* RAM */
@@ -45,6 +52,7 @@ int myHeapIndex;
 
 struct stack_t{
 	int *hdPtr;
+	int hdPtr_avl;
 	ptr_t pointer;
 	int operation;
 };
@@ -65,24 +73,27 @@ void node_set_height(int *myHeap, ptr_t currentPtr, int height);
 void node_write_height(int *myHeap, ptr_t nodePtr, int height);
 int node_read_height(int *myHeap, ptr_t nodePtr);
 signed GetBalance(int *myHeap, ptr_t nodePtr);
-ptr_t ProcessNode(int *myHeap, ptr_t nowPtr, int key);
+ptr_t ProcessNodeInsertion(int *myHeap, ptr_t nowPtr, int key);
+ptr_t ProcessNodeDeletion(int *myHeap, ptr_t nowPtr);
+
+struct stack_t avlStack(int *myStack, int hdPtr_avl, int command, ptr_t pointer, int operation);
 
 /* Update */
-ptr_t UpdateNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int oldKey, int newKey);
+ptr_t UpdateNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int oldKey, int newKey);
 /* Delete Node */
-ptr_t DeleteTreeNode(int *myHeap, int *stackPtr, ptr_t rootPtr, int key);
+ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key);
 
 /* Delete */
-ptr_t Deletetree(int *myHeap, int *stackPtr, ptr_t treePtr);
+ptr_t DeleteTree(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr);
 struct sub_t DeleteTreeSub(int *myHeap, ptr_t treePtr);
 
 /* Search */
-struct search_t Search(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
+struct search_t Search(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr, int data);
 struct sub_t SearchSub(int *myHeap, ptr_t treePtr, int data);
 
 /* Create */
-ptr_t TreeGen(int*myHeap, int *stackPtr, int NumberOfNodes);
-ptr_t Insert(int *myHeap, int *stackPtr, ptr_t treePtr, int data);
+ptr_t TreeGen(int*myHeap,int *fixedStack, int stackPtr_avl, int NumberOfNodes);
+struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr, int data);
 struct sub_t InsertSub(int *myHeap, ptr_t treePtr, int data);
 
 /* Node Operations */

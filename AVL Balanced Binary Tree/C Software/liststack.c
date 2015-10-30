@@ -6,6 +6,7 @@ struct stack_t myStack(int *hdPtr, int command, ptr_t pointer, int operation){
 	int nodeData;
 	int stackOut;
 	if(command == WRITE_STACK){
+		//printf("Writing stack [ %d ]\n", pointer);
 		if(operation == GOING_LEFT){
 			nodeData = pointer;
 		}else if(operation == GOING_RIGHT){
@@ -23,6 +24,7 @@ struct stack_t myStack(int *hdPtr, int command, ptr_t pointer, int operation){
 			output.operation = GOING_RIGHT;
 		}
 		output.pointer = (stackOut & 0x7FFFFFFF);
+		//printf("Reading stack [ %d ]\n", output.pointer);
 		//delete
 		output.hdPtr = DeleteNode(hdPtr);
 	}

@@ -79,7 +79,7 @@ signed GetBalance(int *myHeap, ptr_t nodePtr){
 	}
 }
 
-ptr_t ProcessNode(int *myHeap, ptr_t nowPtr, int key){
+ptr_t ProcessNodeInsertion(int *myHeap, ptr_t nowPtr, int key){
 	int newHeight;
 	signed balanceFactor;
 	int nowKey, leftKey, rightKey;
@@ -111,5 +111,41 @@ ptr_t ProcessNode(int *myHeap, ptr_t nowPtr, int key){
 		outputPtr = nowPtr;
 	}
 	
+	return outputPtr;
+}
+
+ptr_t ProcessNodeDeletion(int *myHeap, ptr_t nowPtr){
+	ptr_t outputPtr;
+	int newHeight;
+	signed balanceFactor;
+	ptr_t leftPtr, rightPtr;	
+	
+	if(nowPtr == NULL_PTR){
+		outputPtr = nowPtr;
+	}else{
+		// update height
+		newHeight = CalculateNodeHeight(myHeap, nowPtr);
+		node_set_height(myHeap, nowPtr, newHeight);
+		
+		//get balance factor
+		balanceFactor = GetBalance(myHeap, nowPtr);
+		
+		// if unbalanced, there are 4 cases
+		leftPtr = node_get_leftNodePtr(myHeap, nowPtr);
+		rightPtr = node_get_rightNodePtr(myHeap, nowPtr);
+		if(balanceFactor > 1 && GetBalance(myHeap, leftPtr) >= 0){
+			outputPtr = RightRotate(myHeap, nowPtr);
+		}else if(balanceFactor > 1 && GetBalance(myHeap, leftPtr) <0 ){
+			node_set_left(myHeap, nowPtr, LeftRotate(myHeap, leftPtr));
+			outputPtr = RightRotate(myHeap,nowPtr);					
+		}else if(balanceFactor < -1 && GetBalance(myHeap, rightPtr) <= 0){
+			outputPtr = LeftRotate(myHeap, nowPtr);
+		}else if(balanceFactor < -1 && GetBalance(myHeap, rightPtr) > 0){
+			node_set_right(myHeap, nowPtr, RightRotate(myHeap, rightPtr));
+			outputPtr = LeftRotate(myHeap,nowPtr);				
+		}else{
+			outputPtr = nowPtr;
+		}	
+	}	
 	return outputPtr;
 }
