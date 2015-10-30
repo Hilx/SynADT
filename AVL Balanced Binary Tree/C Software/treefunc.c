@@ -3,7 +3,7 @@
 /* Application Level */
 /* update */
 ptr_t UpdateNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int oldKey, int newKey){
-	rootPtr = DeleteTreeNode(myHeap, fixedStack, stackPtr_avl, rootPtr, oldKey); // need to modify this so that it updates the height info in the tree nodes
+	rootPtr = DeleteTreeNode(myHeap, fixedStack, stackPtr_avl, rootPtr, oldKey); 
 	struct ptrBundle_t newBundle = Insert(myHeap, fixedStack, stackPtr_avl, rootPtr, newKey);	
 	return newBundle.root;
 }
@@ -12,7 +12,6 @@ ptr_t UpdateNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, 
 ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key){
 	struct search_t node2delete = Search(myHeap, fixedStack, stackPtr_avl, rootPtr, key);
 	ptr_t nodePtr = node2delete.nodePtr;
-	//stackPtr = node2delete.stackPtr;
 	stackPtr_avl = node2delete.stackPtr_avl;
 	ptr_t leftPtr = node_get_leftNodePtr(myHeap, nodePtr);
 	ptr_t rightPtr = node_get_rightNodePtr(myHeap, nodePtr);
@@ -46,8 +45,7 @@ ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootP
 				node_set_left(myHeap, insertResult.nodePtr, right_leftPtr);
 				ptr_t right_rightPtr = node_get_rightNodePtr(myHeap, rightPtr);
 				node_set_right(myHeap, insertResult.nodePtr, right_rightPtr);
-				// update the new node's height
-				
+				// update the new node's height				
 				tempPtr = ProcessNodeDeletion(myHeap, insertResult.nodePtr);				
 			}
 		}
@@ -72,14 +70,9 @@ ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootP
 		}
 	}
 	
-	/* Updating height */
-	
-	//while(stackPtr != NULL){
+	/* Updating height */	
 	while(stackPtr_avl != 0){
-		//stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
 		stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
-		
-		//stackPtr = stackOutput.hdPtr;
 		stackPtr_avl = stackOutput.hdPtr_avl;
 		
 		nowPtr = stackOutput.pointer;
@@ -104,8 +97,7 @@ ptr_t DeleteTree(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr){
 	struct sub_t subResult;
 	struct stack_t stackOutput;
 	ptr_t currentPtr = treePtr;
-	ptr_t returnPtr;
-	
+	ptr_t returnPtr;	
 	
 	while(flag_stop == 0){
 		
@@ -115,15 +107,11 @@ ptr_t DeleteTree(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr){
 				flag_stop = 1;				
 				returnPtr = subResult.pointer;
 			}else{
-				//if(stackPtr == NULL){
 				if(stackPtr_avl == 0){	
 					flag_stop = 1;
 					returnPtr = subResult.pointer;
 				}else{
-					
-					//stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
 					stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
-					//stackPtr = stackOutput.hdPtr;
 					stackPtr_avl = stackOutput.hdPtr_avl;
 					currentPtr = stackOutput.pointer;
 
@@ -137,17 +125,13 @@ ptr_t DeleteTree(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr){
 			}
 		}else{
 			flag_stackIsUsed = 1;			
-			if(subResult.feedback == FB_LEFT){				
-				//stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_LEFT);	
+			if(subResult.feedback == FB_LEFT){
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, currentPtr, GOING_LEFT);
-				//stackPtr = stackOutput.hdPtr;
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				currentPtr = subResult.pointer;
 
 			}else{				
-				//stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_RIGHT);	
-				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, currentPtr, GOING_RIGHT);				
-				//stackPtr = stackOutput.hdPtr;
+				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, currentPtr, GOING_RIGHT);	
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				currentPtr = subResult.pointer;
 			}	
@@ -192,23 +176,17 @@ struct search_t Search(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t tre
 		if(subResult.feedback == FB_DONE){
 			output.nodePtr = subResult.pointer;
 			flag_found = 1;
-			//stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
 			stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
-			//output.stackPtr = stackOutput.hdPtr;	
 			output.stackPtr_avl = stackOutput.hdPtr_avl;
 		}else{
 			output.parentPtr = localPtr;
 			if(subResult.feedback == FB_LEFT){	
-				//stackOutput = myStack(stackPtr, WRITE_STACK, localPtr, GOING_LEFT);	
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, localPtr, GOING_LEFT);
-				//stackPtr = stackOutput.hdPtr;
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				localPtr = node_get_leftNodePtr(myHeap, localPtr);
 				output.direction = GOING_LEFT;
 			}else{
-				//stackOutput = myStack(stackPtr, WRITE_STACK, localPtr, GOING_RIGHT);
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, localPtr, GOING_RIGHT);
-				//stackPtr = stackOutput.hdPtr;
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				localPtr = node_get_rightNodePtr(myHeap, localPtr);
 				output.direction = GOING_RIGHT;
@@ -258,7 +236,6 @@ struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t 
 	ptr_t leftPtr, rightPtr, outputPtr, tempPtr;
 	
 	struct ptrBundle_t output;
-	//int *stackPtr_original = stackPtr;
 	int stackPtr_avl_original = stackPtr_avl;
 
 	while(flag_stop == 0){
@@ -267,14 +244,9 @@ struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t 
 			output.nodePtr = subResult.pointer;
 			flag_stop = 1;	
 			if(flag_stackIsUsed == 0){ 
-				//returnPtr = subResult.pointer;
 				output.root = subResult.pointer;				
 			}else{
-
-				//stackOutput = myStack(stackPtr, READ_STACK, 0, 0);
-				stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
-				
-				//stackPtr = stackOutput.hdPtr;
+				stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);				
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				
 				if(stackOutput.operation == GOING_LEFT){
@@ -286,9 +258,7 @@ struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t 
 				while(stackPtr_avl != stackPtr_avl_original){
 					nowPtr = stackOutput.pointer;
 					nowPtr_new = ProcessNodeInsertion(myHeap, nowPtr, data);		
-					//stackOutput = myStack(stackPtr, stackPtr_avl, 0, 0);
 					stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
-					//stackPtr = stackOutput.hdPtr;
 					stackPtr_avl = stackOutput.hdPtr_avl;
 					if(nowPtr_new != nowPtr){
 						if(stackOutput.operation == GOING_LEFT){
@@ -303,17 +273,12 @@ struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t 
 		}else{
 			flag_stackIsUsed = 1;
 			
-			if(subResult.feedback == FB_LEFT){				
-				//stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_LEFT);	
+			if(subResult.feedback == FB_LEFT){
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, currentPtr, GOING_LEFT);
-				//stackPtr = stackOutput.hdPtr;
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				currentPtr = node_get_leftNodePtr(myHeap, currentPtr);
-
-			}else{				
-				//stackOutput = myStack(stackPtr, WRITE_STACK, currentPtr, GOING_RIGHT);	
+			}else{
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, currentPtr, GOING_RIGHT);
-				//stackPtr = stackOutput.hdPtr;
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				currentPtr = node_get_rightNodePtr(myHeap, currentPtr);
 			}				
