@@ -28,7 +28,7 @@ void DeleteNodeHashTable(int *myHeap, ptr_t hdTable, int key){
 	entry_index_t entryIndex = HashingAlgorithm(key);
 	ptr_t hdList = ReadHashTable(myHeap, hdTable, entryIndex);	
 	// read from hash table
-	hdList = DeleteListNode(myHeap, hdList, key);
+	hdList = DeleteListNode_HT(myHeap, hdList, key);
 	PrintList(myHeap, hdList);
 	// write/update hash table entry pointer value
 	WriteHashTable(myHeap, hdTable, entryIndex, hdList);	

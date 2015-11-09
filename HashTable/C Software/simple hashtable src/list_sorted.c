@@ -9,11 +9,11 @@ int main(){
 	hdPtr = ListGen(myHeap, SizeOfList ,hdPtr);	
 	PrintList(myHeap, hdPtr);
 	
-	hdPtr = DeleteListNode( myHeap, hdPtr, 5);
+	hdPtr = DeleteListNode_HT( myHeap, hdPtr, 5);
 	PrintList(myHeap, hdPtr);	
-	hdPtr = DeleteListNode( myHeap, hdPtr, 0);
+	hdPtr = DeleteListNode_HT( myHeap, hdPtr, 0);
 	PrintList(myHeap, hdPtr);
-	hdPtr = DeleteListNode( myHeap, hdPtr, 9);
+	hdPtr = DeleteListNode_HT( myHeap, hdPtr, 9);
 	PrintList(myHeap, hdPtr);
 	
 	ptr_t tempPtr;
@@ -80,7 +80,7 @@ ptr_t Add2List(int *myHeap, int data, ptr_t hdPtr){
 }
 
 
-ptr_t DeleteListNode(int *myHeap, ptr_t hdPtr, int key){	
+ptr_t DeleteListNode_HT(int *myHeap, ptr_t hdPtr, int key){	
 	ptr_t currentPtr = hdPtr;
 	int currentKey = list_node_read_data(myHeap, currentPtr);
 	ptr_t nextPtr, savePtr;

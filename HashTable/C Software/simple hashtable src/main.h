@@ -33,7 +33,7 @@ void list_node_delete(int *myHeap, ptr_t nodePtr);
 
 ptr_t ListGen(int *myHeap,int SizeOfList, ptr_t hdPtr); 
 ptr_t Add2List(int *myHeap, int data, ptr_t hdPtr);
-ptr_t DeleteListNode(int *myHeap, ptr_t hdPtr, int key);
+ptr_t DeleteListNode_HT(int *myHeap, ptr_t hdPtr, int key);
 ptr_t SearchInList(int *myHeap, ptr_t hdPtr, int key);
 void PrintList(int *myHeap, ptr_t hdPtr);
 
