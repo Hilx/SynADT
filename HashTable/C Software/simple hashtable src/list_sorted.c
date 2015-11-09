@@ -1,5 +1,5 @@
 #include "hashtable.h"
-
+/*
 int main(){
 	int *myHeap = (int*)malloc(sizeof(int) * HEAP_SIZE);
 	
@@ -15,10 +15,14 @@ int main(){
 	PrintList(myHeap, hdPtr);
 	hdPtr = DeleteListNode( myHeap, hdPtr, 9);
 	PrintList(myHeap, hdPtr);
+	
+	ptr_t tempPtr;
+	tempPtr = SearchInList(myHeap, hdPtr, 7);
+	printf("node found with data = %d\n", list_node_read_data(myHeap,tempPtr));
 
 	return 0;
 }
-
+*/
 
 /* Creating a list */
 ptr_t ListGen(int *myHeap,int SizeOfList, ptr_t hdPtr){
@@ -98,13 +102,34 @@ ptr_t DeleteListNode(int *myHeap, ptr_t hdPtr, int key){
 		hdPtr = nextPtr;
 		list_node_delete(myHeap, currentPtr);		
 	}else{
-		nextPtr = list_node_get_next_pointer(myHeap, currentPtr);		
+		nextPtr = list_node_get_next_pointer(myHeap, currentPtr);	
+		list_node_set_next(myHeap, savePtr, nextPtr);
 		list_node_delete(myHeap, currentPtr);
 		hdPtr = hdPtr;
 	}
 	
 	return hdPtr;	
 }
+
+ptr_t SearchInList(int *myHeap, ptr_t hdPtr, int key){
+	ptr_t currentPtr = hdPtr;
+	int currentKey = list_node_read_data(myHeap, currentPtr);
+	int nextPtr;
+	while(currentKey != key && currentPtr != NULL_PTR){
+		nextPtr = list_node_get_next_pointer(myHeap, currentPtr);
+		currentPtr = nextPtr;
+		currentKey = list_node_read_data(myHeap, currentPtr);
+	}
+	
+	int outputPtr;
+	if(currentPtr == NULL_PTR){
+		outputPtr = SEARCH_NOT_FOUND;
+	}else{
+		outputPtr = currentPtr;
+	}
+	return outputPtr;
+}
+
 
 /* SOFTWARE ONLY */
 /* Print the list*/
