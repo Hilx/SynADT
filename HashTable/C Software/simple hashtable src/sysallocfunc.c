@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "main.h"
 
 /* SYSALLOC FUNCTIONS */
 int SysMalloc(int size){

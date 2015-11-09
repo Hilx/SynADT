@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "main.h"
 /*
 int main(){
 	int *myHeap = (int*)malloc(sizeof(int) * HEAP_SIZE);
