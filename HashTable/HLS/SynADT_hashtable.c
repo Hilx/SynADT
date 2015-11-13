@@ -1,8 +1,8 @@
 #include "SynADT_header.h"
 
-ptr_t CreateHashTable(data_t *Master2Mem, int size){
+ptr_t CreateHashTable(data_t *Master2Mem, data_t *Master2SysAlloc, int size){
 	data_t *myHeap = Master2Mem;
-	ptr_t hdTable = SysMalloc(size);	
+	ptr_t hdTable = SysMalloc(size*4, Master2SysAlloc);	
 	ptr_t hdList = NULL_PTR;
 	int i;
 	for(i = 0; i < size; i++){
@@ -45,9 +45,9 @@ ptr_t SearchHashTable(data_t *Master2Mem, ptr_t hdTable, int key){
 /* basic stuff */
 ptr_t ReadHashTable(data_t *Master2Mem, ptr_t hdTable, ptr_t entryIndex){
 	data_t *myHeap = Master2Mem;
-	return myHeap[hdTable + entryIndex];
+	return myHeap[hdTable/4 + entryIndex];
 }
 void WriteHashTable(data_t *Master2Mem, ptr_t hdTable, ptr_t entryIndex, ptr_t listPtr){
 	data_t *myHeap = Master2Mem;
-	myHeap[hdTable + entryIndex] = listPtr;
+	myHeap[hdTable/4 + entryIndex] = listPtr;
 }

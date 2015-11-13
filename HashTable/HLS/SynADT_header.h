@@ -51,7 +51,7 @@ ptr_t DeleteListNode_HT(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdPtr
 ptr_t SearchInList(data_t *Master2Mem, ptr_t hdPtr, int key);
 
 /* ----------------------- HashTable -----------------------*/
-ptr_t CreateHashTable(data_t *Master2Mem, int size);
+ptr_t CreateHashTable(data_t *Master2Mem, data_t *Master2SysAlloc, int size);
 entry_index_t HashingAlgorithm(int key);
 void InsertNodeHashTable(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdTable, int key);
 void DeleteNodeHashTable(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdTable, int key);

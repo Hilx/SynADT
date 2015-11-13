@@ -10,12 +10,18 @@ int CHashTable(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc){
 	int NumberOfItems = 35;
 	
 	ptr_t hdTable;
-	hdTable = CreateHashTable(Master2Mem,  HASH_TABLE_SIZE);
-	
+	hdTable = CreateHashTable(Master2Mem, Master2SysAlloc, HASH_TABLE_SIZE);
+
 	int i;
 	for(i = 0; i<NumberOfItems; i++){
 		InsertNodeHashTable(Master2Mem, Master2SysAlloc, hdTable, i);
 	}
 
-	return hdTable;
+	DeleteNodeHashTable(Master2Mem, Master2SysAlloc, hdTable, 3);
+	DeleteNodeHashTable(Master2Mem, Master2SysAlloc, hdTable, 34);
+	DeleteNodeHashTable(Master2Mem, Master2SysAlloc, hdTable, 17);
+	
+	ptr_t searchResult = SearchHashTable(Master2Mem, hdTable, 22);
+
+	return searchResult;
 }
