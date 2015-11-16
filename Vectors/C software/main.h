@@ -24,7 +24,7 @@ ptr_t VectorInit(int *myHeap, ptr_t hdVector, int size);
 
 
 /* vector */
-int VectorCheckFit(int *myHeap, ptr_t hdVector, int maxVolumn, int currentVecSize);
+int VectorCheckFit(ptr_t hdVector, int maxVolumn, int currentVecSize);
 ptr_t VectorCreate(int *myHeap);
 ptr_t VectorRealloc(int *myHeap, int maxVolumn, int currentVecSize);
 ptr_t VectorPushBack(int *myHeap, ptr_t hdVector, int data);

@@ -12,9 +12,9 @@ int main(){
 	printf("hdVector = %d\n", hdVector); 
 	PrintVec(myHeap, hdVector);
 	
-	hdVector = VectorDestroy(myHeap, hdVector);
+	hdVector = VectorInsert(myHeap, hdVector, 12, 13);
 	printf("hdVector = %d\n", hdVector); 
-	PrintVec(myHeap, hdVector);
-			
+	PrintVec(myHeap, hdVector);		
+	
 	return 0;
 }
