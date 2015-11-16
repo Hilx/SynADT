@@ -1,12 +1,10 @@
 #include "top.h"
 
-int CVectors(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc){
+int CVectors(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, volatile int input){
 
-	int input;
-	#pragma HLS INTERFACE s_axilite port=input bundle=SlavePort
-
+	#pragma HLS INTERFACE s_axilite port=return bundle=SlavePort
 	#pragma HLS INTERFACE s_axilite port=SlaveAXI bundle=SlavePort
-	#pragma HLS INTERFACE s_axilite port=return   bundle=SlavePort
+	#pragma HLS INTERFACE s_axilite port=input bundle=SlavePort
 	#pragma HLS INTERFACE m_axi depth=1 port=Master2Mem offset=off
 	#pragma HLS INTERFACE m_axi depth=1 port=Master2SysAlloc offset=off
 
@@ -31,11 +29,11 @@ int CVectors(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc){
 	}
 
 	if(input > 4){
-		hdVector = VectorInsert(Master2Mem, Master2SysAlloc, hdVector, 25, 27);
+		hdVector = VectorInsert(Master2Mem, Master2SysAlloc, hdVector, 12, 13);
 	}
 
 	if(input > 5){
-		VectorDelete(Master2Mem, Master2SysAlloc, 4);
+		VectorDelete(Master2Mem, hdVector, 4);
 	}
 
 	if(input > 6){

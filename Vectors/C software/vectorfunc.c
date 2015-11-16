@@ -111,12 +111,12 @@ ptr_t VectorInsert(int *myHeap, ptr_t hdVector, int keyData, int newData){
 		i = 0;
 		while(flag_found == 0){
 			checkData = vector_read_data(myHeap, hdVector, i);	
+			vector_write_data(myHeap, hdVector_new, i, checkData);
 			if(checkData == keyData){
 				flag_found = 1;
 			}else{
 				i++;
 			}
-			vector_write_data(myHeap, hdVector_new, i, checkData);
 		}
 		// write and move other data down by one slot
 		int j;
