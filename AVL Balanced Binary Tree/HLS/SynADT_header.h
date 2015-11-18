@@ -3,7 +3,7 @@
 
 typedef volatile int data_t; // data
 typedef volatile int ptr_t;  //pointer
-typedef volatile unsigned next_t; //offset
+typedef volatile signed next_t; //offset
 
 #define NULL_PTR 0
 
