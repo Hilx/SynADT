@@ -60,7 +60,7 @@ ptr_t ListGen(data_t *Master2Mem, data_t *Master2SysAlloc, int SizeOfList, ptr_t
 	for(i=0;i<SizeOfList;i++){
 		hdPtr = Add2List(Master2Mem, Master2SysAlloc, i, hdPtr);
 	}
-	return hdPtr;
+	return hdPtr+1;
 }
 ptr_t Add2List(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, ptr_t hdPtr){
 	hdPtr = list_node_alloc_new(Master2Mem, Master2SysAlloc, data, hdPtr);
@@ -68,9 +68,10 @@ ptr_t Add2List(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, ptr_t h
 }
 /* Reverse the list */
 ptr_t ReverseList(data_t *Master2Mem,ptr_t hdPtr){
-	ptr_t currentPtr, hdOldListPtr, hdNewListPtr;
+	ptr_t currentPtr,hdOldListPtr, hdNewListPtr;
 	next_t offset;
 	
+	currentPtr = hdPtr;// new
 	hdNewListPtr = NULL_PTR;
 	while(hdPtr != NULL_PTR){
 		currentPtr = hdPtr;
@@ -86,7 +87,7 @@ ptr_t ReverseList(data_t *Master2Mem,ptr_t hdPtr){
 	}
 	hdPtr = currentPtr;	
 	
-	return hdPtr;
+	return hdPtr+1;
 }
 /* Delete the list */
 ptr_t DeleteList(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdPtr){
@@ -102,5 +103,5 @@ ptr_t DeleteList(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t hdPtr){
 		list_node_delete(Master2SysAlloc, nowPtr);
 	}
 	
-	return hdPtr;
+	return hdPtr+1;
 }

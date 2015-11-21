@@ -11,8 +11,6 @@ int CList(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc,  volati
 	ptr_t hdPtr = NULL_PTR;
 	ptr_t hdPtr_old;
 	int SizeOfList = input_r;
-	
-	//Master2SysAlloc[(COUNTER_BASE)/4] = C_START;
 
 	/* Creating a list */
 	Master2SysAlloc[(COUNTER_BASE)/4 + 1] = C_START;
@@ -20,6 +18,7 @@ int CList(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc,  volati
 	hdPtr = ListGen(Master2Mem, Master2SysAlloc, SizeOfList, hdPtr);
 	if(hdPtr != hdPtr_old){
 		Master2SysAlloc[(COUNTER_BASE)/4 + 1] = C_STOP;
+		hdPtr--;
 	}
 
 
@@ -30,6 +29,7 @@ int CList(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc,  volati
 	hdPtr = ReverseList(Master2Mem, hdPtr);
 	if(hdPtr != hdPtr_old){
 		Master2SysAlloc[(COUNTER_BASE)/4 + 2] = C_STOP;
+		hdPtr--;
 	}
 
 	/* Delete the list */
@@ -39,10 +39,8 @@ int CList(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc,  volati
 	hdPtr = DeleteList(Master2Mem, Master2SysAlloc, hdPtr);
 	if(hdPtr != hdPtr_old){
 		Master2SysAlloc[(COUNTER_BASE)/4 + 3] = C_STOP;
+		hdPtr--;
 	}
-
-
-	//Master2SysAlloc[(COUNTER_BASE)/4] = C_STOP;
 
 	return hdPtr;
 }
