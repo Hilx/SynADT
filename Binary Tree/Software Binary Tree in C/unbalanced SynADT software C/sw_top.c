@@ -2,24 +2,16 @@
 
 int main(){
 	int *root = NULL;
+	int log2_tree_size = 4;
 	
-	/* Create the tree */
-	int NumberOfNodes = 10; 
-	// look into TreeGen function! Now it uses a fixed-size array of inputs
-	root = TreeGen(NumberOfNodes, root); 	
+	root = PM_1_INSERTION(root, log2_tree_size);
 	printTree(root);
-	
-	/* Check then Insert */
-	int *temp = Check_thenInsert(root, 9);
-	printTree(root);
-	temp = Check_thenInsert(root, 4);
-	printTree(root);
-		
-	/* Search */	
-	UpdateNode(root, 2,14);
+	root = PM_2_CHECK_INSERTION(root, log2_tree_size);
 	printTree(root);
 	
-	/* Delete the three */
-	root = DeleteTree(root);	
+	root = PM_3_UPDATE(root, log2_tree_size);
+	printTree(root);
+
+	root = PM_4_DELETION(root);
 	printTree(root);
 }

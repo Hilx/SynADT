@@ -3,24 +3,24 @@
 /* Check then Insert */
 int *Check_thenInsert(int *root, data_t key){
 	int *nodePtr = Search(key, root);
-	if(nodePtr == NULL){
+	if(nodePtr == NULL){ // if search failed, insert
 		nodePtr = Insert(key, root);
-	}	
-	return nodePtr;
+	}
+	return root;
 }
 
 /* Update */
 int *UpdateNode(int *root, int oldKey, int newKey){	
 	root = DeleteTreeNode(root, oldKey);
 	int *newPtr;
-	newPtr = Insert(newKey, root);		
+	newPtr = Insert(newKey, root);	
 	return root;
 }
 
 /* Insert */
 int *Insert(int data, int *tree){
 	int *aNodePtr, *bNodePtr;
-	if(tree == NULL){		
+	if(tree == NULL){	
 		tree = tree_node_alloc_new(data);	
 	}else if(data < tree_node_read_data(tree)){
 		aNodePtr = tree_get_left_pointer(tree);
@@ -32,7 +32,7 @@ int *Insert(int data, int *tree){
 		aNodePtr = tree_get_right_pointer(tree);
 		bNodePtr = Insert(data, aNodePtr);
 		if(bNodePtr != aNodePtr){
-			set_right_pointer(tree, bNodePtr);		
+			tree_set_right_pointer(tree, bNodePtr);		
 		}
 	}else if(data == tree_node_read_data(tree)){
 		// don't insert
@@ -63,34 +63,38 @@ int *Search(int data, int *tree){
 
 /* Delete Node */
 int *DeleteTreeNode(int *root, int key){
-
+	// search is done inside the deleting process
+	
 	if(root == NULL){
-		return NULL;
+		return root;
 	}
 	else{
 		struct node_t_std nowNode;
 		nowNode = tree_node_read_std(root);		
 		if(key < nowNode.data){
-			tree_set_left_pointer(root, DeleteTreeNode(tree_get_left_pointer(root),key));
+			if(nowNode.leftPtr != NULL){
+				tree_set_left_pointer(root, DeleteTreeNode(nowNode.leftPtr,key)); 
+			}
 		}else if(key > nowNode.data){
-			set_right_pointer(root, DeleteTreeNode(tree_get_right_pointer(root),key));
+			if(nowNode.rightPtr != NULL){
+				tree_set_right_pointer(root, DeleteTreeNode(nowNode.rightPtr,key));
+			}
 		}else{
 			if(nowNode.leftPtr == NULL){
 				int *temp = nowNode.rightPtr;
 				SysFree(root);
 				return temp;
-			}else if(tree_get_right_pointer(root) == NULL){
+			}else if(nowNode.rightPtr == NULL){
 				int *temp = nowNode.leftPtr;
 				SysFree(root);
-				return temp;			
+				return temp;							
 			}		
-			int *temp = minValueNode(tree_get_right_pointer(root));
+			int *temp = minValueNode(nowNode.rightPtr);
 			tree_node_write_data(root, tree_node_read_data(temp));			
-			set_right_pointer(root, DeleteTreeNode(nowNode.rightPtr, tree_node_read_data(temp)));			
+			tree_set_right_pointer(root, DeleteTreeNode(nowNode.rightPtr, tree_node_read_data(temp)));
 		}
 	}
 	return root;
-
 }
 int *minValueNode(int *node){
 	int *current = node;
@@ -120,7 +124,7 @@ int *DeleteTree(int *tree){
 		}
 		if(rightPtr != NULL){
 			tempPtr = DeleteTree(rightPtr);
-			set_right_pointer(tree, tempPtr);
+			tree_set_right_pointer(tree, tempPtr);
 		}
 		SysFree(tree);
 		return NULL;

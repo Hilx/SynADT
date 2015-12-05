@@ -47,7 +47,7 @@ int *tree_node_alloc_new(data_t data);
 
 /* Set Pointers */
 void tree_set_left_pointer(int *nowNodePtr, int *nextNodePtr);
-void set_right_pointer(int *nowNodePtr, int *nextNodePtr);
+void tree_set_right_pointer(int *nowNodePtr, int *nextNodePtr);
 
 /* Get Pointers*/
 int *tree_get_left_pointer(int *tree);

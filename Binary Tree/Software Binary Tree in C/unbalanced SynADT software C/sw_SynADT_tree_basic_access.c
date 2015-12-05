@@ -15,11 +15,21 @@ int *tree_node_alloc_new(data_t data){
 
 /* Set Pointers */
 void tree_set_left_pointer(int *nowNodePtr, int *nextNodePtr){
-	next_t offset = nextNodePtr - nowNodePtr;
+	next_t offset;
+	if(nextNodePtr == NULL){
+		offset = NULL_PTR - (int)nowNodePtr;
+	}else{
+		offset = nextNodePtr - nowNodePtr;
+	}	
 	tree_node_write_left(nowNodePtr, offset);
 }
-void set_right_pointer(int *nowNodePtr, int *nextNodePtr){
-	next_t offset = nextNodePtr - nowNodePtr;
+void tree_set_right_pointer(int *nowNodePtr, int *nextNodePtr){
+	next_t offset;
+	if(nextNodePtr == NULL){
+		offset = NULL_PTR - (int)nowNodePtr;
+	}else{
+		offset = nextNodePtr - nowNodePtr;
+	}
 	tree_node_write_right(nowNodePtr, offset);	
 }
 
@@ -28,8 +38,9 @@ int *tree_get_left_pointer(int *tree){
 	int *returnPtr;
 	int pointerValue;
 	next_t offset = tree_node_read_left(tree);
-	
+
 	pointerValue = (int)tree + offset;
+
 	if(pointerValue == NULL_PTR){
 		returnPtr = NULL;
 	}else{
@@ -54,7 +65,7 @@ int *tree_get_right_pointer(int *tree){
 /* Standard Whole Node Accesses (with pointers instead of offsets) */
 void tree_node_write_std(int *nodePtr, struct node_t_std nowNode){
 	tree_set_left_pointer(nodePtr, nowNode.leftPtr);
-	set_right_pointer(nodePtr, nowNode.rightPtr);	
+	tree_set_right_pointer(nodePtr, nowNode.rightPtr);	
 	tree_node_write_data(nodePtr, nowNode.data);
 }
 struct node_t_std tree_node_read_std(int *nodePtr){
@@ -95,8 +106,10 @@ next_t tree_node_read_left(int *nodePtr){
 	return nodePtr[LEFT_OFFSET];
 }
 next_t tree_node_read_right(int *nodePtr){
+	//printf("\nread right\n");
 	return nodePtr[RIGHT_OFFSET];
 }
 data_t tree_node_read_data(int *nodePtr){
+	//printf("\nread data\n");
 	return nodePtr[DATA_OFFSET];
 }
