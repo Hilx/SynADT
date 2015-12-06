@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "sw_SynADT.h"
 
-int *TreeGen(int NumberOfNodes, int *root);
+int *ListGen(int SizeOfList, int *hdPtr);
+int *RandListGen(int log2SizeOfList, int *hdPtr);
 void PrintList(int *hdPtr);

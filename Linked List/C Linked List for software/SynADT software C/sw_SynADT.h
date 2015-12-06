@@ -11,14 +11,13 @@ typedef int data_t;
 
 struct node_t{
 	next_t next;
-	data_t data;  // 2
+	data_t data;  
 };
 
 struct node_t_std{
 	int *nextPtr;
-	data_t data;  // 2
+	data_t data; 
 };
-
 
 int *Add2List(int data, int *hdPtr);
 int *ReverseList(int *hdPtr);
@@ -29,9 +28,9 @@ int *DeleteList(int *hdPtr);
 /* using offset based method    */
 
 /* Allocate New Node */
-int *list_node_alloc_new(data_t data);
+int *list_node_alloc_new(data_t data, int *hdPtr);
 /* Set Pointers */
-void list_set_left_pointer(int *nowNodePtr, int *nextNodePtr);
+void list_set_next_pointer(int *nowNodePtr, int *nextNodePtr);
 /* Get Pointers*/
 int *list_get_next_pointer(int *list);
 /* Standard Whole Node Accesses (with pointers instead of offsets) */

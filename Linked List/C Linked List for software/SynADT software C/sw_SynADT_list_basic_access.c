@@ -1,18 +1,27 @@
+#include "sw_SynADT.h"
 
 /* Allocate New Node */
-int *list_node_alloc_new(data_t data){
+int *list_node_alloc_new(data_t data, int *hdPtr){
 	int *newNodePtr;
 	newNodePtr = SysMalloc(sizeof(struct node_t));
-	next_t offset = NULL_PTR - (int)newNodePtr;
+	
+	next_t offset;
+	if(hdPtr == NULL){
+		offset = NULL_PTR -(int)newNodePtr;
+	}else{
+		offset = hdPtr - newNodePtr;
+	}	
+
 	struct node_t newNode;
 	newNode.data = data;
 	newNode.next = offset;
 	list_node_write(newNodePtr, newNode);
+	
 	return newNodePtr;
 }
 
 /* Set Pointers */
-void list_set_left_pointer(int *nowNodePtr, int *nextNodePtr){
+void list_set_next_pointer(int *nowNodePtr, int *nextNodePtr){
 	next_t offset;
 	if(nextNodePtr == NULL){
 		offset = NULL_PTR - (int)nowNodePtr;
