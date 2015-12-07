@@ -16,9 +16,9 @@ int RandGen(int log2_num_range){
 }
 int xorshift64(void){
 	
-	int t = x ^( x << 2);
-	x = y;
-	y= w;
+	int t = seed_x ^( seed_x << 2);
+	seed_x = seed_y;
+	seed_y = seed_w;
 	
-	return w = w ^ (w >> 13) ^ t ^ (t >> 23);
+	return seed_w = seed_w ^ (seed_w >> 13) ^ t ^ (t >> 23);
 }

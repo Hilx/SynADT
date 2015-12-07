@@ -4,7 +4,7 @@
 int *Check_thenInsert(int *root, data_t key){
 	int *nodePtr = Search(key, root);
 	if(nodePtr == NULL){ // if search failed, insert
-		nodePtr = Insert(key, root);
+		root = Insert(key, root);
 	}
 	return root;
 }
@@ -14,7 +14,7 @@ int *UpdateNode(int *root, int oldKey, int newKey){
 	root = DeleteTreeNode(root, oldKey);
 	int *newPtr;
 	newPtr = Insert(newKey, root);	
-	return root;
+	return newPtr;
 }
 
 /* Insert */
@@ -55,13 +55,16 @@ int *Insert(int data, int *tree){
 		
 		if (balance > 1 && data < tree_node_read_data(leftPtr)){
 			return rightRotate(node);
-		}else if (balance < -1 && data > tree_node_read_data(rightPtr)){
+		}
+		if (balance < -1 && data > tree_node_read_data(rightPtr)){
 			return leftRotate(node);
-		}else if (balance > 1 && data > tree_node_read_data(leftPtr))
+		}
+		if (balance > 1 && data > tree_node_read_data(leftPtr))
 		{
 			tree_set_left_pointer(node,leftRotate(leftPtr));
 			return rightRotate(node);
-		}else if (balance < -1 && data <tree_node_read_data(rightPtr))
+		}
+		if (balance < -1 && data <tree_node_read_data(rightPtr))
 		{
 			tree_set_right_pointer(node,rightRotate(rightPtr));
 			return leftRotate(node);
@@ -125,6 +128,39 @@ int *DeleteTreeNode(int *root, int key){
 			tree_set_right_pointer(root, DeleteTreeNode(nowNode.rightPtr, tree_node_read_data(temp)));
 		}
 	}
+	
+	// ----------- Balancing ----------------
+	if(root == NULL){
+		return root;
+	}else{
+		int *leftPtr, *rightPtr;
+		leftPtr = tree_get_left_pointer(root);
+		rightPtr = tree_get_right_pointer(root);
+		
+		tree_node_write_height(root, calc_height(root));
+		signed balance = getBalance(root);
+		
+		// If this node becomes unbalanced 		 
+		// Left Left Case
+		if (balance > 1 && getBalance(leftPtr) >= 0){
+			return rightRotate(root);
+		}
+		// Left Right Case
+		if (balance > 1 && getBalance(leftPtr) < 0){
+			tree_set_left_pointer(root,leftRotate(leftPtr));
+			return rightRotate(root);
+		}
+		// Right Right Case
+		if (balance < -1 && getBalance(rightPtr) <= 0){
+			return leftRotate(root);
+		}		
+		// Right Left Case
+		if (balance < -1 && getBalance(rightPtr) > 0){
+			tree_set_right_pointer(root, rightRotate(rightPtr));
+			return leftRotate(root);
+		}
+	}
+	
 	return root;
 }
 int *minValueNode(int *node){

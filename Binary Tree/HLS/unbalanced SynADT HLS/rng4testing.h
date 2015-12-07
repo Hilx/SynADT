@@ -5,13 +5,9 @@ struct seed_t{
 	int x,y,w;
 };
 
-//int x = 7432;
-//int y = 776227;
-//int w = 48779005;
-
-int x = 123456789;
-int y = 362436069;
-int w = 88675123;
+int seed_x = 123456789;
+int seed_y = 362436069;
+int seed_w = 88675123;
 
 int RandGen(int log2_num_range);
 unsigned MaskCreate(int NumOfBits);

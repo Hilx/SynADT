@@ -19,7 +19,7 @@ ptr_t PM_1_INSERTION(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t stackPtr
 
 ptr_t PM_2_CHECK_INSERTION(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t stackPtr, ptr_t root, int log2_tree_size){
 	int log2_RNG_num_range = log2_tree_size; // generate FULL range from RNG
-	int IterationRange = 1 << log2_RNG_num_range - 1; // only get half of them
+	int IterationRange = 1 << (log2_RNG_num_range - 1); // only get half of them
 	int i;
 	for(i = 0; i < IterationRange; i++){		
 		int key = RandGen(log2_RNG_num_range);
@@ -30,7 +30,7 @@ ptr_t PM_2_CHECK_INSERTION(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t st
 }
 
 ptr_t PM_3_UPDATE(data_t *Master2Mem, data_t *Master2SysAlloc, ptr_t stackPtr, ptr_t root, int log2_tree_size){
-	int IterationRange = 1 << log2_tree_size - 1;
+	int IterationRange = 1 << (log2_tree_size - 1);
 	int i;
 	for(i = 0; i < IterationRange; i++){
 		int oldKey = RandGen(log2_tree_size - 1);

@@ -1,7 +1,8 @@
 #include "top.h"
 
-int CTreeUBnew(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, data_t input_r){
+int CTreeUBnew(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, data_t input_r, data_t func_sel){
 
+	#pragma HLS INTERFACE s_axilite port=func_sel bundle=SlavePort
 	#pragma HLS INTERFACE s_axilite port=input_r bundle=SlavePort
 	#pragma HLS INTERFACE s_axilite port=SlaveAXI bundle=SlavePort
 	#pragma HLS INTERFACE s_axilite port=return   bundle=SlavePort
@@ -31,13 +32,16 @@ int CTreeUBnew(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, da
 		root--;
 	}
 
-	Master2SysAlloc[(COUNTER_BASE)/4 + 3] = C_START;
-	root_old = root;
-	root =  PM_3_UPDATE(Master2Mem, Master2SysAlloc, stackPtr, root, log2_tree_size);
-	if(root != root_old){
-		Master2SysAlloc[(COUNTER_BASE)/4 + 3] = C_STOP;
-		root--;
-	}
+	//if(func_sel == 1){
+		Master2SysAlloc[(COUNTER_BASE)/4 + 3] = C_START;
+		root_old = root;
+
+		root =  PM_3_UPDATE(Master2Mem, Master2SysAlloc, stackPtr, root, log2_tree_size);
+		if(root != root_old){
+			Master2SysAlloc[(COUNTER_BASE)/4 + 3] = C_STOP;
+			root--;
+		}
+	//}
 
 	Master2SysAlloc[(COUNTER_BASE)/4 + 4] = C_START;
 	root_old = root;
