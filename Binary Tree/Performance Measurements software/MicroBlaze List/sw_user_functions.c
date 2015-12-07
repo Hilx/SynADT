@@ -38,7 +38,7 @@ int *PM_1_INSERTION(int *root, int log2_tree_size){
 
 int *PM_2_CHECK_INSERTION(int *root, int log2_tree_size){
 	int log2_RNG_num_range = log2_tree_size; // generate FULL range from RNG
-	int IterationRange = 1 << log2_RNG_num_range - 1; // only get half of them
+	int IterationRange = 1 << (log2_RNG_num_range - 1); // only get half of them
 	int *temp;
 	int i;
 	for(i = 0; i < IterationRange; i++){		
@@ -49,7 +49,7 @@ int *PM_2_CHECK_INSERTION(int *root, int log2_tree_size){
 }
 
 int *PM_3_UPDATE(int *root, int log2_tree_size){
-	int IterationRange = 1 << log2_tree_size - 1;
+	int IterationRange = 1 << (log2_tree_size - 1);
 	int i;
 	for(i = 0; i < IterationRange; i++){
 		int oldKey = RandGen(log2_tree_size - 1);
