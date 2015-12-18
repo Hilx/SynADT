@@ -13,6 +13,8 @@ typedef volatile signed next_t;  // offset
 
 #define NULL_PTR 0
 
+#define REQ_NODE_SIZE 12
+
 /* ----------------------- List ----------------------- */
 #define LIST_DATA_OFFSET 1
 #define LIST_NEXT_OFFSET 0

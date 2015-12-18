@@ -14,7 +14,7 @@ void tree_node_set_right(data_t *Master2Mem, ptr_t currentNodePtr, ptr_t nextNod
 ptr_t tree_node_alloc_new(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, ptr_t leftNodePtr, ptr_t rightNodePtr){
 	ptr_t newNodePtr;
 	struct tree_node_t newNode;
-	newNodePtr = SysMalloc(sizeof(struct tree_node_t), Master2SysAlloc);
+	newNodePtr = SysMalloc(REQ_NODE_SIZE, Master2SysAlloc);
 	newNode.data = data;
 	newNode.left = leftNodePtr - newNodePtr;
 	newNode.right = rightNodePtr - newNodePtr;

@@ -1,6 +1,6 @@
 #include "top.h"
 
-int CListnew(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, data_t input_r){
+int CList(data_t *SlaveAXI, data_t *Master2Mem, data_t *Master2SysAlloc, data_t input_r){
 
 	#pragma HLS INTERFACE s_axilite port=input_r bundle=SlavePort
 	#pragma HLS INTERFACE s_axilite port=SlaveAXI bundle=SlavePort

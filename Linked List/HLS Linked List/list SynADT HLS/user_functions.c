@@ -15,7 +15,7 @@ ptr_t PM_RandListGen(data_t *Master2Mem, data_t *Master2SysAlloc, int log2SizeOf
 	int i;
 	int iter = 1 << log2SizeOfList;
 	for(i = 0; i < iter; i++){
-		hdPtr = Add2List(Master2Mem, Master2SysAlloc, RandGen(log2SizeOfList), hdPtr);
+		hdPtr = Add2List(Master2Mem, Master2SysAlloc, i, hdPtr);
 	}
 	return hdPtr +1;
 }

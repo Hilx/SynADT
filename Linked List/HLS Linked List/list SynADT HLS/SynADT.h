@@ -20,6 +20,7 @@ struct list_node_t{
 	next_t next;
 };
 
+#define REQ_NODE_SIZE 12
 /* List */
 /* Memory Node Access - Write Node */
 volatile void list_node_write_next(data_t *Master2Mem, int nodePtr, next_t offset);

@@ -37,7 +37,7 @@ void list_node_set_next(data_t *Master2Mem, ptr_t currentNodePtr, ptr_t nextNode
 ptr_t list_node_alloc_new(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, ptr_t nextNodePtr){
 	ptr_t newNodePtr;
 	struct list_node_t newNode;
-	newNodePtr = SysMalloc(sizeof(struct list_node_t), Master2SysAlloc);
+	newNodePtr = SysMalloc(REQ_NODE_SIZE, Master2SysAlloc);
 	newNode.data = data;
 	newNode.next = nextNodePtr - newNodePtr;
 	list_node_write(Master2Mem, newNodePtr, newNode);
