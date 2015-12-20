@@ -41,7 +41,6 @@ struct search_t{
 	int direction;
 	int stackPtr_avl;
 	int flag_failed;
-	int used_stack;
 };
 
 struct ptrBundle_t{

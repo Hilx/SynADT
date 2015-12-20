@@ -28,7 +28,7 @@ int main(void){
 	//root = DeleteTree(myHeap, fixedStack, stackPtr_avl, root);
 	//printTree(myHeap,root);
 	
-	int log2_tree_size = 7;
+	int log2_tree_size = 8;
 	
 	root = PM_1_INSERTION(myHeap, fixedStack, stackPtr_avl, log2_tree_size);;
 	printTree(myHeap, root);

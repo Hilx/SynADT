@@ -20,6 +20,7 @@ ptr_t UpdateNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, 
 /* Delete Node */
 ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key){
 	struct search_t node2delete = Search(myHeap, fixedStack, stackPtr_avl, rootPtr, key);
+	int hdPtr_avl_local = node2delete.stackPtr_avl;
 	if(node2delete.flag_failed == 0){
 		// ----------------------------------- Deletion -----------------------------------
 		
@@ -46,7 +47,7 @@ ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootP
 					int rightNodeData = node_read_data(myHeap, rightPtr);	
 					ptr_t right_leftPtr = node_get_leftNodePtr(myHeap, rightPtr);		
 					ptr_t right_rightPtr = node_get_rightNodePtr(myHeap, rightPtr);					
-					temp_insert_result = Insert(myHeap, fixedStack, stackPtr_avl, rootPtr, rightNodeData, right_leftPtr, right_rightPtr);	
+					temp_insert_result = Insert(myHeap, fixedStack, hdPtr_avl_local, rootPtr, rightNodeData, right_leftPtr, right_rightPtr);	
 					tempPtr = temp_insert_result.nodePtr;
 				}
 			}			
@@ -85,7 +86,7 @@ ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootP
 			nodePtr_updated = NULL_PTR;
 		}		
 		
-		int hdPtr_avl_local = node2delete.stackPtr_avl;
+
 		while(hdPtr_avl_local > 0){
 			struct stack_t stackOutput = avlStack(fixedStack, hdPtr_avl_local, READ_STACK, 0, 0);
 			hdPtr_avl_local = stackOutput.hdPtr_avl; // update stack pointer
@@ -186,7 +187,6 @@ struct search_t Search(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t tre
 	int flag_stackIsUsed = 0;
 	
 	output.flag_failed = 0;
-	output.used_stack = 0; 
 	output.direction = 7;
 	subResult = SearchSub(myHeap, localPtr, data);
 	while(subResult.pointer != NULL_PTR && flag_found == 0){
@@ -198,7 +198,6 @@ struct search_t Search(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t tre
 				//stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
 				//output.stackPtr_avl = stackOutput.hdPtr_avl;
 				output.stackPtr_avl = stackPtr_avl;
-				output.used_stack = 1;
 			}else{
 				output.stackPtr_avl = 0;
 			}
@@ -215,7 +214,6 @@ struct search_t Search(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t tre
 				stackOutput = avlStack(fixedStack, stackPtr_avl, WRITE_STACK, localPtr, GOING_RIGHT);
 				stackPtr_avl = stackOutput.hdPtr_avl;
 				localPtr = node_get_rightNodePtr(myHeap, localPtr);
-
 				//output.direction = GOING_RIGHT;
 			}		
 			if(localPtr == NULL_PTR){
@@ -288,7 +286,7 @@ struct ptrBundle_t Insert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t 
 					}
 					
 					// read stack to clear stack
-					while(stackPtr_avl != stackPtr_avl_original){
+					while(stackPtr_avl > stackPtr_avl_original){
 						nowPtr = stackOutput.pointer;
 						nowPtr_new = ProcessNodeInsertion(myHeap, nowPtr, data);		
 						stackOutput = avlStack(fixedStack, stackPtr_avl, READ_STACK, 0, 0);
