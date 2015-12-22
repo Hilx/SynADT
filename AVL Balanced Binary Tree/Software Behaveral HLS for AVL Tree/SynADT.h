@@ -5,28 +5,31 @@
 int SysMalloc(int size);
 void SysFree(int addr);
 
-//-----------
+typedef int ptr_t;
+typedef signed next_t;
+typedef int data_t;
 
 struct node_t{
-	signed left; //0
-	signed right;	//1
-	int height;//2
-	int data; //3
+	signed left; 
+	signed right;	
+	int height;
+	int data; 
 };
+
+struct node_t_std{
+	ptr_t leftPtr; 
+	ptr_t rightPtr;	
+	int height;
+	int data; 
+};
+
 #define NODE_SIZE 4 // each node has 3 integers
-#define HEAP_SIZE 1000 // maximum number of nodes
+#define HEAP_SIZE 10000000 // maximum number of nodes
 #define NULL_PTR NODE_SIZE*HEAP_SIZE //NULL pointer has an impossible index value
 #define DATA_OFFSET 3
 #define LEFT_OFFSET 0
 #define RIGHT_OFFSET 1
 #define HEIGHT_OFFSET 2
-#define CORNER_HEIGHT 99
-
-typedef int ptr_t;
-typedef signed next_t;
-typedef int data_t;
-
-
 
 /* INSERT HELPER STRUCT */
 struct sub_t{
@@ -38,7 +41,6 @@ struct sub_t{
 struct search_t{
 	ptr_t nodePtr;
 	ptr_t parentPtr;
-	int direction;
 	int stackPtr_avl;
 	int flag_failed;
 };
@@ -89,9 +91,13 @@ struct stack_t avlStack(int *myStack, int hdPtr_avl, int command, ptr_t pointer,
 /* Check then Insert */
 ptr_t Check_thenInsert(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key);
 /* Update */
-ptr_t UpdateNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int oldKey, int newKey);
+ptr_t UpdateNode(int *myHeap, int *fixedStack, int *secondStack, int stackPtr_avl, ptr_t rootPtr, int oldKey, int newKey);
 /* Delete Node */
-ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key);
+ptr_t DeleteTreeNode(int *myHeap, int *fixedStack, int *secondStack, int stackPtr_avl, ptr_t rootPtr, int key);
+struct sub_t DeleteNodeSub(int *myHeap, ptr_t nodePtr, int key);
+ptr_t minValueNode(int *myHeap, ptr_t nodePtr);
+ptr_t DeleteSuccessor(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t rootPtr, int key);
+struct sub_t DeleteSuccessorSub(int *myHeap, ptr_t nodePtr, int key);
 
 /* Delete */
 ptr_t DeleteTree(int *myHeap, int *fixedStack, int stackPtr_avl, ptr_t treePtr);
@@ -110,9 +116,12 @@ struct sub_t InsertSub(int *myHeap, ptr_t treePtr, int data, ptr_t new_leftPtr, 
 void node_set_left(int *myHeap, ptr_t currentPtr, ptr_t nextPtr);
 void node_set_right(int *myHeap, ptr_t currentPtr, ptr_t nextPtr);
 ptr_t node_alloc_new(int *myHeap, data_t data, ptr_t leftNodePtr, ptr_t rightNodePtr);
-ptr_t node_get_leftNodePtr(int *myHeap, ptr_t currentNodePtr);
-ptr_t node_get_rightNodePtr(int *myHeap, ptr_t currentNodePtr);
+ptr_t node_get_left_pointer(int *myHeap, ptr_t currentNodePtr);
+ptr_t node_get_right_pointer(int *myHeap, ptr_t currentNodePtr);
 void node_delete(ptr_t nodePtr);
+
+void node_write_std(int *myHeap, ptr_t nodePtr, struct node_t_std nodeIn);
+struct node_t_std node_read_std(int *myHeap, ptr_t nodePtr);
 /* Whole Node Access in Memory */
 void node_write(int *myHeap, ptr_t nodePtr, struct node_t nodeIn);
 struct node_t node_read(int *myHeap, ptr_t nodePtr);

@@ -1,6 +1,7 @@
 #include "SynADT.h"
 
-struct stack_t avlStack(int *myStack, int hdPtr_avl, int command, ptr_t pointer, int operation){
+struct stack_t avlStack(data_t *myStack, ptr_t hdPtr_avl, int command, ptr_t pointer, int operation){
+
 	struct stack_t output;
 	int rightMask = 0x80000000;
 	int nodeData;
@@ -23,7 +24,7 @@ struct stack_t avlStack(int *myStack, int hdPtr_avl, int command, ptr_t pointer,
 		}else{
 			output.operation = GOING_RIGHT;
 		}
-		output.pointer = (stackOut & 0x1FFFFFFF);
+		output.pointer = (stackOut & 0x7FFFFFFF);
 		//delete
 		output.hdPtr_avl = hdPtr_avl;
 	}

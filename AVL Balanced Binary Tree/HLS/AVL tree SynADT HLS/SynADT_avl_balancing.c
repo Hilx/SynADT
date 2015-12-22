@@ -8,7 +8,7 @@ int max(int a, int b){
 	}
 }
 
-int CalculateNodeHeight(int *myHeap, ptr_t nodePtr){	
+int CalculateNodeHeight(data_t *myHeap, ptr_t nodePtr){	
 	int height;	
 	if(nodePtr == NULL_PTR){
 		height = 0;
@@ -35,7 +35,7 @@ int CalculateNodeHeight(int *myHeap, ptr_t nodePtr){
 	return height;
 }
 
-int height(int *myHeap, ptr_t nodePtr){
+int height(data_t *myHeap, ptr_t nodePtr){
 	if(nodePtr == NULL_PTR){
 		return 0;
 	}else{
@@ -43,20 +43,20 @@ int height(int *myHeap, ptr_t nodePtr){
 	}
 }
 
-ptr_t RightRotate(int *myHeap, ptr_t yPtr){
+ptr_t RightRotate(data_t *myHeap, ptr_t yPtr){
 	ptr_t xPtr = node_get_left_pointer(myHeap, yPtr);
 	ptr_t temp = node_get_right_pointer(myHeap, xPtr);
-
+	
 	node_set_right(myHeap, xPtr, yPtr);
-	node_set_left(myHeap, yPtr, temp);
+	node_set_left(myHeap, yPtr, temp);	
 	
 	node_set_height(myHeap, yPtr, CalculateNodeHeight(myHeap, yPtr));
-	node_set_height(myHeap, xPtr, CalculateNodeHeight(myHeap, xPtr));
+	node_set_height(myHeap, xPtr, CalculateNodeHeight(myHeap, xPtr));	
 	
 	return xPtr;	
 }
 
-ptr_t LeftRotate(int *myHeap, ptr_t xPtr){
+ptr_t LeftRotate(data_t *myHeap, ptr_t xPtr){
 	ptr_t yPtr = node_get_right_pointer(myHeap, xPtr);
 	ptr_t temp = node_get_left_pointer(myHeap, yPtr);
 
@@ -69,12 +69,12 @@ ptr_t LeftRotate(int *myHeap, ptr_t xPtr){
 	return yPtr;
 }
 
-signed GetBalance(int *myHeap, ptr_t nodePtr){
+signed GetBalance(data_t *myHeap, ptr_t nodePtr){
 	if(nodePtr == NULL_PTR){
 		return 0;
-	}else{		
+	}else{
 		ptr_t leftPtr = node_get_left_pointer(myHeap, nodePtr);
-		ptr_t rightPtr = node_get_right_pointer(myHeap, nodePtr);
+		ptr_t rightPtr = node_get_right_pointer(myHeap, nodePtr);		
 		if(leftPtr == NULL_PTR && rightPtr == NULL_PTR){
 			return 0;
 		}else{
@@ -85,7 +85,7 @@ signed GetBalance(int *myHeap, ptr_t nodePtr){
 	}
 }
 
-ptr_t ProcessNodeInsertion(int *myHeap, ptr_t nowPtr, int key){
+ptr_t ProcessNodeInsertion(data_t *myHeap, ptr_t nowPtr, int key){
 	int newHeight;
 	signed balanceFactor;
 	int nowKey, leftKey, rightKey;
@@ -120,12 +120,12 @@ ptr_t ProcessNodeInsertion(int *myHeap, ptr_t nowPtr, int key){
 	return outputPtr;
 }
 
-ptr_t ProcessNodeDeletion(int *myHeap, ptr_t nowPtr){
+ptr_t ProcessNodeDeletion(data_t *myHeap, ptr_t nowPtr){
+
 	ptr_t outputPtr;
 	int newHeight;
 	signed balanceFactor;
 	ptr_t leftPtr, rightPtr;	
-	//printf("nowPtr = %d\n",nowPtr);
 	if(nowPtr == NULL_PTR){
 		outputPtr = nowPtr;
 	}else{
