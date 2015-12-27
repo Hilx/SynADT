@@ -97,7 +97,8 @@ struct search_t Search(data_t *Master2Mem, ptr_t treePtr, int data){
 	output.flag_failed = 0;
 	output.direction = 7;
 	subResult = SearchSub(Master2Mem, localPtr, data);
-	while(subResult.pointer != NULL_PTR && flag_found == 0){	
+	//while(subResult.pointer != NULL_PTR && flag_found == 0){
+	while(localPtr != NULL_PTR && flag_found == 0){
 		if(subResult.feedback == FB_DONE){
 			output.nodePtr = subResult.pointer;
 			flag_found = 1;
