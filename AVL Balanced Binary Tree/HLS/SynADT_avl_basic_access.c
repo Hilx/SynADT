@@ -9,16 +9,17 @@ void node_set_right(data_t *myHeap, ptr_t currentPtr, ptr_t nextPtr){
 	next_t offset =  nextPtr - currentPtr;
 	node_write_right(myHeap, currentPtr, offset);
 }
-void node_set_height(data_t *myHeap, ptr_t currentPtr, int height){
+volatile void node_set_height(data_t *myHeap, ptr_t currentPtr, int height){
 	node_write_height(myHeap, currentPtr, height);
 }
-ptr_t node_alloc_new(data_t *myHeap, data_t *Master2SysAlloc, data_t data, ptr_t leftNodePtr, ptr_t rightNodePtr){
+
+ptr_t node_alloc_new(data_t *myHeap, data_t *Master2SysAlloc, data_t data){
 	ptr_t newNodePtr;
 	struct node_t newNode;
-	newNodePtr = SysMalloc(REQ_NODE_SIZE, Master2SysAlloc);
+	newNodePtr = SysMalloc(28, Master2SysAlloc);
 	newNode.data = data;
-	newNode.left = leftNodePtr - newNodePtr;
-	newNode.right = rightNodePtr - newNodePtr;
+	newNode.left = NULL_PTR - newNodePtr;
+	newNode.right = NULL_PTR - newNodePtr;
 	newNode.height = 1;
 	node_write(myHeap, newNodePtr, newNode);
 	return newNodePtr;
@@ -34,8 +35,6 @@ ptr_t node_get_right_pointer(data_t *myHeap, ptr_t currentNodePtr){
 void node_delete(data_t *Master2SysAlloc, ptr_t nodePtr){
 	SysFree(nodePtr, Master2SysAlloc);
 }
-
-
 /* Whole Node Access in Memory */
 void node_write_std(data_t *myHeap, ptr_t nodePtr, struct node_t_std nodeIn){
 	node_write_data(myHeap, nodePtr, nodeIn.data);

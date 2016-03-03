@@ -1,4 +1,4 @@
-#include "SynADT_header.h"
+#include "SynADT_malloc_wrapper.h"
 
 volatile int SysMalloc(int size, data_t *Master2SysAlloc){
 
