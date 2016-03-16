@@ -8,22 +8,32 @@ ptr_t Add2SortedList(data_t *Master2Mem, data_t *Master2SysAlloc, data_t data, p
 		struct list_node_t_std nowNode;
 		ptr_t nowPtr = hdPtr;
 		ptr_t prePtr = hdPtr;
-SEARCH: while(flag_stop != 1 && nowPtr != NULL_PTR){
-			nowNode = list_node_read_std(Master2Mem, nowPtr);
-			if(data > nowNode.data){
+SEARCH: while(flag_stop != 1){
+			if(nowPtr == NULL_PTR){
 				flag_stop = 1;	
 				ptr_t newNodePtr = list_node_alloc_new(Master2Mem, Master2SysAlloc, data, nowPtr);
 				if(prePtr == hdPtr){
 					hdPtr = newNodePtr;
 				}else{
 					list_node_set_next_pointer(Master2Mem, prePtr, newNodePtr);
-				}		
-			}else if(data < nowNode.data){
-				prePtr = nowPtr;
-				nowPtr = nowNode.nextPtr;				
-				flag_stop = 0;
-			}else if(data == nowNode.data){
-				flag_stop = 1;
+				}
+			}else{
+				nowNode = list_node_read_std(Master2Mem, nowPtr);
+				if(data > nowNode.data){
+					flag_stop = 1;
+					ptr_t newNodePtr = list_node_alloc_new(Master2Mem, Master2SysAlloc, data, nowPtr);
+					if(prePtr == hdPtr){
+						hdPtr = newNodePtr;
+					}else{
+						list_node_set_next_pointer(Master2Mem, prePtr, newNodePtr);
+					}
+				}else if(data < nowNode.data){
+					prePtr = nowPtr;
+					nowPtr = nowNode.nextPtr;
+					flag_stop = 0;
+				}else if(data == nowNode.data){
+					flag_stop = 1;
+				}
 			}
 		}
 	}
